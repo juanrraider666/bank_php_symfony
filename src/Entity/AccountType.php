@@ -30,11 +30,6 @@ class AccountType
     private $description;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $transactionType;
-
-    /**
      * @ORM\OneToMany(targetEntity=Account::class, mappedBy="accountType")
      */
     private $accounts;
@@ -73,17 +68,6 @@ class AccountType
         return $this;
     }
 
-    public function getTransactionType(): ?string
-    {
-        return $this->transactionType;
-    }
-
-    public function setTransactionType(string $transactionType): self
-    {
-        $this->transactionType = $transactionType;
-
-        return $this;
-    }
 
     /**
      * @return Collection|Account[]

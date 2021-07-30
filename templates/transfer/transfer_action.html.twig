@@ -1,0 +1,108 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container">
+        <!-- Steps form -->
+        <div class="card">
+            <div class="card-body mb-4">
+
+                <h2 class="text-center font-weight-bold pt-4 pb-5"><strong>Steps form example</strong></h2>
+
+                <p>
+                    <strong>Se esta haciendo una transaccion desde la cuenta
+                        <a href="https://mdbootstrap.com/docs/standard/components/stepper/" target="_blank"> #{{ accountTransferFrom.name }}</a>
+                    </strong>
+                </p>
+
+                <hr class="mt-5">
+
+                <p>Built with <a target="_blank" href="https://mdbootstrap.com/docs/standard/">Material Design for Bootstrap</a> - free and powerful Bootstrap UI KIT</p>
+
+                <a class="btn btn-primary me-2" href="https://mdbootstrap.com/docs/standard/getting-started/installation/" target="_blank" role="button">Download MDB UI KIT <i class="fas fa-download"></i></a>
+                <a class="btn btn-danger me-2" target="_blank" href="https://mdbootstrap.com/docs/standard/" role="button">Learn more</a>
+                <a class="btn btn-success me-2" target="_blank" href="https://mdbootstrap.com/docs/standard/getting-started/" role="button">Tutorials</a>
+                <a class="btn btn-dark me-2" target="_blank" href="https://github.com/mdbootstrap/mdb-ui-kit" role="button">GitHub <i class="fab fa-github ms-2"></i></a>
+
+                <hr class="mb-5"/>
+                <!-- Stepper -->
+                <div class="steps-form">
+                    <div class="steps-row setup-panel">
+                        <div class="steps-step">
+                            <a href="#step-9" type="button" class="btn btn-indigo btn-circle">1</a>
+                            <p>Step 1</p>
+                        </div>
+                        <div class="steps-step">
+                            <a href="#step-10" type="button" class="btn btn-default btn-circle" disabled="disabled">2</a>
+                            <p>Step 2</p>
+                        </div>
+                        <div class="steps-step">
+                            <a href="#step-11" type="button" class="btn btn-default btn-circle" disabled="disabled">3</a>
+                            <p>Step 3</p>
+                        </div>
+                    </div>
+                </div>
+
+               {{ form_start(form) }}
+
+                    <!-- First Step -->
+                    <div class="row setup-content" id="step-9">
+                        <div class="col-md-12">
+                            <h3 class="font-weight-bold pl-0 my-4"><strong>Seleccione el tipo de transacción</strong></h3>
+                            <div class="form-group md-form">
+                                {{ form_row(form.transactionType) }}
+{#                                <label for="yourName" data-error="wrong" data-success="right">First Name</label>#}
+{#                                <input id="yourName" type="text" required="required" class="form-control validate">#}
+                            </div>
+{#                            <div class="form-group md-form mt-3">#}
+
+{#                                <label for="yourLastName" data-error="wrong" data-success="right">Last Name</label>#}
+{#                                <input id="yourLastName" type="text" required="required" class="form-control validate">#}
+{#                            </div>#}
+{#                            <div class="form-group md-form mt-3">#}
+{#                                <label for="yourAddress" data-error="wrong" data-success="right">Address</label>#}
+{#                                <textarea id="yourAddress" type="text" required="required" rows="2" class="md-textarea validate form-control"></textarea>#}
+{#                            </div>#}
+                            <button class="btn btn-indigo btn-rounded nextBtn float-right" type="button">Continuar</button>
+                        </div>
+                    </div>
+
+                    <!-- Second Step -->
+                    <div class="row setup-content" id="step-10">
+                        <div class="col-md-12">
+                            <h3 class="font-weight-bold pl-0 my-4"><strong>Step 2</strong></h3>
+                            <div class="form-group md-form">
+                                {{ form_row(form.account) }}
+{#                                <label for="companyName" data-error="wrong" data-success="right">Company Name</label>#}
+{#                                <input id="companyName" type="text" required="required" class="form-control validate">#}
+                            </div>
+                            <div class="form-group md-form mt-3">
+                                {{ form_row(form.amount) }}
+{#                                <label for="companyAddress" data-error="wrong" data-success="right">Company Address</label>#}
+{#                                <input id="companyAddress" type="text" required="required" class="form-control validate">#}
+                            </div>
+                            <button class="btn btn-indigo btn-rounded prevBtn float-left" type="button">Volver</button>
+                            <button class="btn btn-indigo btn-rounded nextBtn float-right" type="button">Continuar</button>
+                        </div>
+                    </div>
+
+                    <!-- Third Step -->
+                    <div class="row setup-content" id="step-11">
+                        <div class="col-md-12">
+                            <h3 class="font-weight-bold pl-0 my-4"><strong>Confirmar la transaccion.</strong></h3>
+                            <button class="btn btn-indigo btn-rounded prevBtn float-left" disabled type="button">Volver</button>
+                            <button class="btn btn-default btn-rounded float-right" type="submit">Confirmar</button>
+                        </div>
+                    </div>
+
+                {{ form_end(form) }}
+
+            </div>
+        </div>
+        <!-- Steps form -->
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{- parent() -}}
+    {{ encore_entry_script_tags('my_accounts') }}
+{% endblock %}

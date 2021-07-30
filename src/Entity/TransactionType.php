@@ -97,4 +97,8 @@ class TransactionType
 
         return $this;
     }
+
+    public function __toString() {
+        return $this->code;
+    }
 }

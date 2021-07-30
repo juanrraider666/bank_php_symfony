@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Account;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -17,6 +18,25 @@ class AccountRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Account::class);
+    }
+
+    public function getActivesFilterUser($user, $account)
+    {
+        return $this->getActivesUserQb($user)
+            ->andWhere('a.id != :accountExcept')
+            ->setParameter('accountExcept', $account)
+            ->getQuery()->getResult();
+    }
+
+    public function getActivesUserQb(User $user)
+    {
+        return $this->createQueryBuilder('a')
+            ->join('a.customer','customer')
+            ->where('a.active = TRUE')
+            ->andWhere('customer.user = :user')
+            ->setParameter('user', $user)
+            ->orderBy('a.id', 'ASC')
+            ;
     }
 
     // /**

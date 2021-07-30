@@ -18,8 +18,12 @@ global.$ = global.jQuery = $;
 
 // start the Stimulus application
  import './bootstrap';
-// import 'bootstrap';
 
+// this "modifies" the jquery module: adding behavior to it
+// the bootstrap module doesn't export/return anything
+// require('bootstrap');
+require('bootstrap/js/dist/tooltip');
+require('bootstrap/js/dist/popover');
 
 (function() {
     'use strict';
@@ -39,5 +43,8 @@ global.$ = global.jQuery = $;
     }, false);
 })();
 
+$(function () {
+    $('[data-toggle="popover"]').popover()
+});
 
 console.log('hello world!°')

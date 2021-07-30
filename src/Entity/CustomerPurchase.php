@@ -43,6 +43,7 @@ class CustomerPurchase
     public function __construct()
     {
         $this->transactions = new ArrayCollection();
+        $this->date = new \DateTime('now');
     }
 
     public function getId(): ?int
@@ -64,7 +65,7 @@ class CustomerPurchase
 
     public function getQuantity(): ?float
     {
-        return $this->quantity;
+        return $this->quantity == null ? 0 : $this->quantity;
     }
 
     public function setQuantity(float $quantity): self
@@ -114,5 +115,13 @@ class CustomerPurchase
         }
 
         return $this;
+    }
+
+    public static function purchase($customer, $quantity)
+    {
+        $purchase = new self();
+        $purchase->setCustomer($customer);
+        $purchase->setQuantity($quantity);
+        return $purchase;
     }
 }

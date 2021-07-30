@@ -52,7 +52,7 @@ class Customer
     private $details;
 
     /**
-     * @ORM\ManyToOne(targetEntity=customerType::class, inversedBy="customers")
+     * @ORM\ManyToOne(targetEntity=CustomerType::class, inversedBy="customers")
      * @ORM\JoinColumn(nullable=false)
      */
     private $customerType;

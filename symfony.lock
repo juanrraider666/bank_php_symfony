@@ -103,6 +103,15 @@
     "friendsofphp/proxy-manager-lts": {
         "version": "v1.0.5"
     },
+    "knplabs/knp-components": {
+        "version": "v3.1.0"
+    },
+    "knplabs/knp-paginator-bundle": {
+        "version": "v5.6.0"
+    },
+    "knplabs/knp-time-bundle": {
+        "version": "v1.16.1"
+    },
     "laminas/laminas-code": {
         "version": "4.4.2"
     },
@@ -224,6 +233,9 @@
     },
     "sebastian/version": {
         "version": "3.0.2"
+    },
+    "select2/select2": {
+        "version": "4.0.13"
     },
     "sensio/framework-extra-bundle": {
         "version": "5.2",

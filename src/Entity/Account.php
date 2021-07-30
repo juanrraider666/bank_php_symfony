@@ -44,6 +44,17 @@ class Account
      */
     private $transactions;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $active;
+
+    /**
+     * @var integer
+     * @ORM\Column(name="amount", type="decimal", precision=7, scale=2)
+     */
+    private $amount;
+
     public function __construct()
     {
         $this->customer = new ArrayCollection();
@@ -149,5 +160,41 @@ class Account
         }
 
         return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getActive()
+    {
+        return $this->active;
+    }
+
+    /**
+     * @param mixed $active
+     */
+    public function setActive($active): void
+    {
+        $this->active = $active;
+    }
+
+    public function __toString() {
+        return $this->name;
+    }
+
+    /**
+     * @return int
+     */
+    public function getAmount(): int
+    {
+        return $this->amount;
+    }
+
+    /**
+     * @param int $amount
+     */
+    public function setAmount(int $amount): void
+    {
+        $this->amount = $amount;
     }
 }
