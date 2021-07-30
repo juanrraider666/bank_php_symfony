@@ -1,0 +1,253 @@
+{# Los "-" guiones que se ven entre las definicones de etiquetas {%- y -%} son para quitar espacios en blanco y minimizar el c�digo generado #}
+{%- macro attributes(attributes, text) -%}
+    {%- import _self as links -%}
+    {%- for name, value in attributes -%}
+        {%- if name not in ['class', 'title', 'icon', 'type', 'size', 'default_class', 'hiddenIsLogged']  -%}
+            {{- ' ' -}}{{ name }}="{{ value|escape('html_attr') }}"
+        {%- endif -%}
+    {%- endfor -%}
+    {{- ' ' -}}title="{{ attributes.title|default(text) }}"
+{%- endmacro -%}
+
+{%- macro attr_class(attributes) -%}
+    {%- import _self as links -%}
+    class="btn btn-{{ attributes.type|default('default') }} {{ attributes.default_class|default }} {{ attributes.class|default }} {{ links.btn_size(attributes.size|default) }}"
+{%- endmacro -%}
+
+{%- macro simple_attr_class(attributes) -%}
+    {%- import _self as links -%}
+    {%- if attributes.default_class is defined or attributes.class is defined -%}
+        class="{{ (attributes.default_class|default ~ ' ' ~ attributes.class|default)|trim }}"
+    {%- endif -%}
+{%- endmacro -%}
+
+{%- macro link(url, text, attributes = []) -%}
+    {%- import _self as links -%}
+    <a href="{{- url -}}" {{ links.attr_class(attributes) }} {{ links.attributes(attributes, text) }}>
+        {%- if attributes.icon is defined -%}{{ attributes.icon }} {% endif -%}{{- text -}}
+    </a>
+{%- endmacro -%}
+
+{%- macro btn_size(size, default) -%}
+    {%- set size = size|default(default) -%}
+    {{- size and size != 'md' ? 'btn-'~size -}}
+{%- endmacro -%}
+
+{%- macro simple_link(url, text, attributes = []) -%}
+    {%- import _self as links -%}
+    <a href="{{- url -}}" {{ links.simple_attr_class(attributes) }} {{ links.attributes(attributes, text) }}>
+        {%- if attributes.icon is defined -%}{{ attributes.icon }} {% endif -%}
+        {% if attributes.hide_text|default(false) == false %}{{- text -}}{% endif %}
+    </a>
+{%- endmacro -%}
+
+{# Macros para botones de formulario #}
+{%- macro button(text, attributes = []) -%}
+    {%- import _self as links -%}
+    <button type="button" {{ links.attr_class(attributes) }} {{ links.attributes(attributes, text) }}>
+        {%- if attributes.icon is defined -%}{{ attributes.icon }} {% endif -%}{{- text -}}
+    </button>
+{%- endmacro -%}
+
+{%- macro submit(text, attributes = []) -%}
+    {%- import _self as links -%}
+    <button type="submit" {{ links.attr_class(attributes) }} {{ links.attributes(attributes, text) }}>
+        {%- if attributes.icon is defined -%}{{ attributes.icon }} {% endif -%}{{- text -}}
+    </button>
+{%- endmacro -%}
+
+{# Macros para links con estilos de boton #}
+{%- macro btn_yes(text, attributes = []) -%}
+    {%- import _self as links -%}
+    {#{%- from 'loyalty/icons.html.twig' import icon -%}#}
+    {{- links.submit(text is same as(false) ? '' : text|default('label.yes'|trans), {
+        type: 'primary', class: 'btn-yes btn-blue pull-right m_l10',
+    }|merge(attributes)) -}}
+{%- endmacro -%}
+
+{%- macro btn_no(text, attributes = []) -%}
+    {%- import _self as links -%}
+    {#{%- from 'loyalty/icons.html.twig' import icon -%}#}
+    {{- links.submit(text is same as(false) ? '' : text|default('label.no'|trans), {
+        type: 'default', class: 'btn-no',
+    }|merge(attributes)) -}}
+{%- endmacro -%}
+
+{%- macro btn_close(text, attributes = []) -%}
+    {%- import _self as links -%}
+    {{- links.submit(text is same as(false) ? '' : text|default('label.close'|trans), {
+        type: 'primary', class: '',
+    }|merge(attributes)) -}}
+{%- endmacro -%}
+
+{%- macro primary_link(url, text, attributes = []) -%}
+    {%- import _self as links -%}
+    {{- links.link(url, text, {type: 'primary'}|merge(attributes)) -}}
+{%- endmacro -%}
+
+{%- macro success_link(url, text, attributes = []) -%}
+    {%- import _self as links -%}
+    {{- links.link(url, text, {type: 'success'}|merge(attributes)) -}}
+{%- endmacro -%}
+
+{%- macro info_link(url, text, attributes = []) -%}
+    {%- import _self as links -%}
+    {{- links.link(url, text, {type: 'info'}|merge(attributes)) -}}
+{%- endmacro -%}
+
+{%- macro warning_link(url, text, attributes = []) -%}
+    {%- import _self as links -%}
+    {{- links.link(url, text, {type: 'warning'}|merge(attributes)) -}}
+{%- endmacro -%}
+
+{%- macro danger_link(url, text, attributes = []) -%}
+    {%- import _self as links -%}
+    {{- links.link(url, text, {type: 'danger'}|merge(attributes)) -}}
+{%- endmacro -%}
+
+{%- macro btn_link(url, text, attributes = []) -%}
+    {%- import _self as links -%}
+    {{- links.link(url, text, {type: 'link'}|merge(attributes)) -}}
+{%- endmacro -%}
+
+{# Macros para botones de operaciones CRUD #}
+{%- macro back(url, text, attributes = []) -%}
+    {%- import _self as links -%}
+    {#{%- from 'loyalty/icons.html.twig' import icon_back -%}#}
+    {{- links.link(url, text is same as(false) ? '' : text|default('btn.back'|trans), {
+        default_class: 'btn btn_normal space_r btn-default', type: 'back'
+    }|merge(attributes)) -}}
+{%- endmacro -%}
+
+{%- macro edit(url, text, attributes = []) -%}
+    {%- import _self as links -%}
+{#    {%- from 'loyalty/icons.html.twig' import icon_edit -%}#}
+    {{- links.link(url, text is same as(false) ? '' : text|default('label.edit'|trans), {
+        default_class: 'btn-edit',
+    }|merge(attributes)) -}}
+{%- endmacro -%}
+
+{%- macro delete(url, text, attributes = []) -%}
+    {%- import _self as links -%}
+{#    {%- from 'loyalty/icons.html.twig' import icon_remove -%}#}
+    {{- links.link(url, text is same as(false) ? '' : text|default('label.delete'|trans), {
+        default_class: 'btn-delete',
+    }|merge(attributes)) -}}
+{%- endmacro -%}
+
+{%- macro add(url, text, attributes = []) -%}
+    {%- import _self as links -%}
+    {#{%- from 'loyalty/icons.html.twig' import icon_add -%}#}
+    {{- links.primary_link(url, text is same as(false) ? '' : text|default('btn.add'|trans), {
+        default_class: 'btn-add btn-blue',
+    }|merge(attributes)) -}}
+{%- endmacro -%}
+
+{%- macro save(text, attributes = []) -%}
+    {%- import _self as btn -%}
+    {#{%- from 'loyalty/icons.html.twig' import icon_save -%}#}
+    {{- btn.submit(text is same as(false) ? '' : text|default('Guardar'|trans), {
+        default_class: 'btn-blue', type: 'save'
+    }|merge(attributes)) -}}
+{%- endmacro -%}
+
+{%- macro ajax_save(text, attributes = []) -%}
+    {%- import _self as btn -%}
+    {#{%- from 'loyalty/icons.html.twig' import icon_save -%}#}
+    {{- btn.submit(text is same as(false) ? '' : text|default('Guardar'|trans), {
+        default_class: 'btn-blue', type: 'save'
+    }|merge(attributes)) -}}
+{%- endmacro -%}
+
+{%- macro ajax_show(url, text, attributes = []) -%}
+    {%- import _self as links -%}
+    {{- links.link(url, text is same as(false) ? '' : text|default('label.show'|trans), {
+        default_class: 'btn-show element-ajax-show',
+    }|merge(attributes)) -}}
+{%- endmacro -%}
+
+{%- macro show(text, attributes = []) -%}
+    {%- import _self as btn -%}
+    {{- btn.button(text is same as(false) ? '' : text|default('btn.show'|trans), {
+        default_class: 'element-show', type: 'show'
+    }|merge(attributes)) -}}
+{%- endmacro -%}
+
+{%- macro hide(text, attributes = []) -%}
+    {%- import _self as btn -%}
+    {{- btn.button(text is same as(false) ? '' : text|default('btn.close'|trans), {
+        default_class: 'btn-disable element-hide', type: 'close'
+    }|merge(attributes)) -}}
+{%- endmacro -%}
+
+{%- macro primary_action(text, attributes = []) -%}
+    {%- import _self as btn -%}
+    {{- btn.submit(text is same as(false) ? '' : text|default('Guardar'|trans), {
+        type: 'primary',
+    }|merge(attributes)) -}}
+{%- endmacro -%}
+
+{%- macro search(text, attributes = []) -%}
+    {%- import _self as btn -%}
+{#    {%- from 'loyalty/icons.html.twig' import icon_search -%}#}
+    {{- btn.submit(text is same as(false) ? '' : text|default('Buscar'|trans), {
+        default_class: 'btn-search',
+    }|merge(attributes)) -}}
+{%- endmacro -%}
+
+{%- macro clear_filters(url, text, attributes = []) -%}
+    {%- import _self as links -%}
+{#    {%- from 'loyalty/icons.html.twig' import icon_clear -%}#}
+    {{- links.link(url, text is same as(false) ? '' : text|default('Limpiar'|trans), {
+        default_class: 'btn-clear-filters',
+    }|merge(attributes)) -}}
+{%- endmacro -%}
+
+{%- macro link_yes(url, text, attributes = []) -%}
+    {%- import _self as links -%}
+    {{- links.primary_link(url, text is same as(false) ? '' : text|default('label.yes'|trans), {
+        default_class: 'link-yes',
+    }|merge(attributes)) -}}
+{%- endmacro -%}
+
+{%- macro link_no(url, text, attributes = []) -%}
+    {%- import _self as links -%}
+    {{- links.link(url, text is same as(false) ? '' : text|default('label.no'|trans), {
+        default_class: 'link-no pull-right',
+    }|merge(attributes)) -}}
+{%- endmacro -%}
+
+{%- macro redeem(url, text, attributes = []) -%}
+    {%- import _self as links -%}
+    {{- links.primary_link(url, text is same as(false) ? '' : text|default('label.redeem_now'|trans), {
+        default_class: 'link-redeem', size: 'lg',
+    }|merge(attributes)) -}}
+{%- endmacro -%}
+
+{%- macro link_export(url, text, attributes = []) -%}
+    {%- import _self as links -%}
+    {{- links.primary_link(url, text is same as(false) ? '' : text|default('label.export'|trans), {
+        default_class: 'link-export',
+    }|merge(attributes)) -}}
+{%- endmacro -%}
+
+{%- macro link_print(url, text, attributes = []) -%}
+    {%- import _self as links -%}
+    {{- links.link(url, text is same as(false) ? '' : text|default('label.print'|trans), {
+        default_class: 'link-print',
+    }|merge(attributes)) -}}
+{%- endmacro -%}
+
+{%- macro accept(text, attributes = []) -%}
+    {%- import _self as btn -%}
+    {{- btn.submit(text is same as(false) ? '' : text|default('btn.accept'|trans), {
+        default_class: 'btn-accept', type: 'primary'
+    }|merge(attributes)) -}}
+{%- endmacro -%}
+
+{%- macro decline(text, attributes = []) -%}
+    {%- import _self as btn -%}
+    {{- btn.submit(text is same as(false) ? '' : text|default('btn.decline'|trans), {
+        default_class: 'btn-decline', type: 'default'
+    }|merge(attributes)) -}}
+{%- endmacro -%}

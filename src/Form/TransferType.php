@@ -8,6 +8,7 @@ use App\Entity\Account;
 use App\Entity\CustomerPurchase;
 use App\Entity\Transaction;
 use App\Entity\TransactionType;
+use App\Model\TransactionModel;
 use App\Repository\AccountRepository;
 use App\Validator\AmountLessThan;
 use Doctrine\ORM\EntityRepository;
@@ -28,9 +29,8 @@ class TransferType extends AbstractType
         $exceptAccount = $options['exceptAccount'];
         $user = $options['user'];
 
-        $builder->add('account', EntityType::class, [
+        $builder->add('destinationAccount', EntityType::class, [
             'attr' => ['class' => 'select2',  'data-widget' => 'select2', 'data-autocomplete-url'],
-//            'constraints' => new AmountLessThan(),
             'class' => Account::class,
             'label_attr' => ['class' => 'form-control-label'],
             'query_builder' => function (AccountRepository $er) use ($user, $exceptAccount) {
@@ -65,7 +65,7 @@ class TransferType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Transaction::class,
+            'data_class' => TransactionModel::class,
             'exceptAccount' => null,
             'user' => null,
         ]);

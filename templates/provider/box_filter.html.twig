@@ -1,0 +1,39 @@
+{% form_theme form 'provider/filters.html.twig' %}
+{% set _header = block('header') %}
+{% set formSubmited = form.vars.submitted and app.request.get(form.vars.name, false) %}
+<div class="panel panel-filter panel-{{ type|default('default') }}" {% if id is defined %}id="{{ id }}"{% endif %}>
+    {% block form_start %}{{ form_start(form, {attr: {'class':'form-horizontal', 'novalidate' : 'novalidate'}}) }}{% endblock %}
+    {#{% if _header is not empty %}#}
+    <div class="panel-heading toggle-filter {% if formSubmited %} hide{% endif %}" style="cursor:pointer;">
+        {#{{ _header|raw }}#}
+        <h3 class="panel-title">
+            {% block header %}
+                <i class="fa_light glyphicon glyphicon-plus"></i> {{ 'label.show_filters'|trans }}
+            {% endblock %}
+        </h3>
+    </div>
+    {#{% endif %}#}
+    <div class="panel-body {% if not formSubmited %} hide{% endif %}">
+        {% block fields %}
+            <div class="row">
+                {% for child in form %}
+                    {{ form_row(child, {container_class: container_class|default('col-sm-3')}) }}
+                {% endfor %}
+            </div>
+        {% endblock %}
+    </div>
+    <div class="panel-footer {% if not formSubmited %} hide{% endif %}">
+        <div class="row">
+            <div class="col-md-12">
+                {% block buttons %}
+                    {% from 'provider/buttons.html.twig' import search, clear_filters %}
+                    {{ clear_filters(clear_path, null, {'class':'pull-right m_l10'}) }}
+                    {{ search(null,{"type": "blue", 'class':'pull-right '}) }}
+                {% endblock %}
+            </div>
+        </div>
+    </div>
+    {% block form_end %}{{ form_end(form) }}{% endblock %}
+</div>
+
+

@@ -36,15 +36,28 @@ class TransactionRepository extends ServiceEntityRepository
     }
     */
 
-    /*
-    public function findOneBySomeField($value): ?Transaction
+
+    public function allTransferUser($user, $filters = [])
     {
-        return $this->createQueryBuilder('t')
-            ->andWhere('t.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
+        $query = $this->createQueryBuilder('t')
+            ->join('t.purchase', 'purchase')
+            ->join('t.Account', 'account')
+            ->join('purchase.customer','customer')
+            ->join('customer.user', 'user')
+            ->andWhere('user.id = :user')
+            ->setParameter('user', $user)
         ;
+
+        if(isset($filters['origin'])){
+            $query->andWhere('account.id = :account')->setParameter('account', $filters['origin']);
+        }
+
+        if(isset($filters['destination'])){
+            $query->andWhere('customer.account = :account_destination')->setParameter('account_destination', $filters['destination']);
+        }
+
+        return $query->getQuery()
+        ->getResult();
     }
-    */
+
 }

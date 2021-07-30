@@ -7,6 +7,7 @@ use App\Entity\Customer;
 use App\Entity\CustomerPurchase;
 use App\Entity\Transaction;
 use App\Entity\User;
+use App\Model\TransactionModel;
 use Doctrine\ORM\EntityManagerInterface;
 
 class TransferHelper
@@ -22,21 +23,24 @@ class TransferHelper
         $this->entityManager = $entityManager;
     }
 
-    public function transfer(Transaction $transaction, Account $account): Transaction
+    public function transfer(TransactionModel $transaction): Transaction
     {
        $amount = $transaction->getAmount();
-       $destinationAccount = $transaction->getAccount();
+       $destinationAccount = $transaction->getDestinationAccount();
+       $originAccount = $transaction->getOriginAccount();
 
        $tr = new Transaction();
        $tr->setAccount($destinationAccount);
        $tr->setTransactionType($transaction->getTransactionType());
        $tr->setAmount($amount);
+       $tr->setControlNumber($tr->generateControlNumber($destinationAccount->getCustomer()->last()));
 
-       $purchase = CustomerPurchase::purchase($account->getCustomer()->last(), 1);
+       $purchase = CustomerPurchase::purchase($originAccount->getCustomer()->last(), 1);
 
-       $amountAccount = $account->getAmount() - $amount;
-       $account->setAmount($amountAccount);
-       $destinationAccount->setAmount($amount);
+       $amountAccount = $originAccount->getAmount() - $amount;
+       $originAccount->setAmount($amountAccount);
+
+       $destinationAccount->setAmount($destinationAccount->getAmount() + $amount);
 
        $tr->setPurchase($purchase);
 

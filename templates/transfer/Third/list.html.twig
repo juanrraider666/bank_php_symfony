@@ -1,0 +1,74 @@
+{%  extends 'base.html.twig' %}
+
+{% block filter %}
+    {% include 'provider/simple_box_filter.html.twig' with {placeholder: 'Nombre de usuario'|trans} %}
+{% endblock %}
+
+
+{% block body %}
+
+    <table class="table t-left-table record-table end-user-list top-parent-element">
+        <thead>
+        <tr class="tr-first">
+            <th>{{ 'Tipo de cuenta'|trans }}</th>
+            <th>{{ 'Usuario'|trans }}</th>
+            <th>{{ 'Banco'|trans }}</th>
+            <th>{{ 'Estado'|trans }}</th>
+            <th>{{ 'Acciones'|trans }}</th>
+        </tr>
+        </thead>
+        <tbody>
+{#        {% from 'loyalty/icons.html.twig' import icon_check, icon_uncheck %}#}
+        {% if pagination|length > 0 %}
+            {% for item in pagination %}
+                {% set budgetTotal = 0 %}
+                {% set balanceTotal = 0 %}
+                <tr class="parent-element" data-target="#child-node-{{ item.id }} > td">
+                    <td>{{ item.accountType.code }}</td>
+                    <td>{% for customer in item.customer%}
+                            {{ customer.name }}
+                        {% endfor %}
+                    </td>
+                    <td>{{ 'BANCO PHP'}}</td>
+                    <td>{{ item.active ? 'Activa' : 'Inactiva' }}</td>
+                    <td>
+                        {% if item.active == 1 %}
+                            <span class="glyphicon glyphicon-ok" aria-hidden="true">
+                                       <div {{ stimulus_controller('modal-form', {
+                                            formUrl: path('transfer_third', {accountTo: item.id, account: account.id})
+                                        }) }}
+                                        data-action="hidden.bs.modal->modal-form#modalHidden"
+                                        >
+                                        <button
+                                                class="btn btn-primary btn-sm"
+                                                data-action="modal-form#openModal"
+                                        >Transfer +</button>
+
+                                        {{ include('_modal.html.twig', {
+                                            modalTitle: 'Nueva transferencia',
+                                        }) }}
+                                       </div>
+                            </span>
+                        {% elseif item.active == 3%}
+                            <span class="glyphicon glyphicon-transfer" aria-hidden="true"></span>
+                        {% else %}
+                            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                        {% endif %}
+                    </td>
+                    <td class="text-center">
+
+                    </td>
+
+                </tr>
+                <tr id="child-node-{{ item.id }}" class="hide">
+                    <td colspan="11"></td>
+                </tr>
+            {% endfor %}
+        {% else %}
+            <tr>
+                <td colspan="11"><span class="light_txt">{{ 'label.list.no_result'|trans }}</span></td>
+            </tr>
+        {% endif %}
+        </tbody>
+    </table>
+{% endblock %}

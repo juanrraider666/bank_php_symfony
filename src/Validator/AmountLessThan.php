@@ -11,7 +11,8 @@ use Symfony\Component\Validator\Constraint;
  */
 class AmountLessThan extends Constraint
 {
-    public $message = 'La cuenta "{{ string }}" no cuenta con fondos suficientes.';
+    public $message = 'El monto a transferir debe ser superior a 0: monto dado "{{ string }}"';
+    public $messageNotFound = 'La cuenta "{{ string }}" no cuenta con fondos suficientes.';
 
     public function validatedBy()
     {

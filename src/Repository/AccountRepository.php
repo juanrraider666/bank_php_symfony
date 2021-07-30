@@ -28,12 +28,42 @@ class AccountRepository extends ServiceEntityRepository
             ->getQuery()->getResult();
     }
 
+    public function findAllAndFilter(User $user, $filters)
+    {
+        $query = $this->createQueryBuilder('a')
+            ->join('a.customer','customer')
+            ->join('customer.user','user')
+            ->where('a.active = TRUE')
+            ->andWhere('user.id != :userExcept')
+            ->setParameter('userExcept', $user)
+            ->orderBy('a.name','ASC');
+
+        if (isset($filters['name'])) {
+            $query->andWhere('customer.name LIKE :name')
+                ->setParameter('name', '%'.$filters['name'].'%');
+        }
+
+        return $query->getQuery()->getResult();
+    }
+
+
     public function getActivesUserQb(User $user)
     {
         return $this->createQueryBuilder('a')
             ->join('a.customer','customer')
             ->where('a.active = TRUE')
             ->andWhere('customer.user = :user')
+            ->setParameter('user', $user)
+            ->orderBy('a.id', 'ASC')
+            ;
+    }
+
+    public function getActivesOtherAccounts($user)
+    {
+        return $this->createQueryBuilder('a')
+            ->join('a.customer','customer')
+            ->where('a.active = TRUE')
+            ->andWhere('customer.user != :user')
             ->setParameter('user', $user)
             ->orderBy('a.id', 'ASC')
             ;

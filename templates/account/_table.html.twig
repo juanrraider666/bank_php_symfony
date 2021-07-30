@@ -1,0 +1,51 @@
+<table class="table">
+    <thead>
+    <tr>
+        <th>{{ knp_pagination_sortable(pagination, 'id'|trans, 'id') }}</th>
+        <th>{{ knp_pagination_sortable(pagination, 'Nombre', 'name') }}</th>
+        <th>{{ knp_pagination_sortable(pagination, 'Abierta hace'|trans, 'openedDate') }}</th>
+        <th>{{ knp_pagination_sortable(pagination, 'Tipo'|trans, 'accountType') }}</th>
+        <th>{{ knp_pagination_sortable(pagination, 'Status'|trans, 'active') }}</th>
+        <th class="text-center">{{ 'Acciones'|trans }}</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% if pagination|length > 0 %}
+    {% for account in pagination %}
+        <tr data-id="{{ account.id }}">
+            <td>{{ account.id }}</td>
+            <td>{{ account.name }}</td>
+            <td><time datetime="{{ account.openedDate|date('Y-m-d H:i') }}">{{ account.openedDate|ago }}</time></td>
+            <td>{{ account.accountType.code }}</td>
+            <td>{{ account.active ? 'Activa' : 'Inactiva' }}</td>
+            <td class="text-center">
+                <div class="dropdown">
+                    <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                        {{ 'Acciones'|trans }}
+                    </a>
+
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                        <li> <a class="dropdown-item s_14"
+                                href="{{ path('transfer', { account: account.id }) }}">{{ 'Transferencia'|trans }}</a>
+
+                        </li>
+                        <li> <a class="dropdown-item s_14"
+                                href="{{ path('transfer_list_third', {account: account.id }) }}">{{ 'Transferencia a terceros'|trans }}</a></li>
+                    </ul>
+
+                </div>
+            </td>
+        </tr>
+    {% endfor %}
+    {% else %}
+        <tr>
+            <td colspan="11"><span class="light_txt">{{ 'No dispone de una cuenta y no es posible hacer transferencias.'|trans }}</span></td>
+        </tr>
+    {% endif %}
+    </tbody>
+</table>
+{# display navigation#}
+    {{ knp_pagination_render(pagination, null, {}, {
+        'align': 'center',
+        'size': 'small',
+    }) }}

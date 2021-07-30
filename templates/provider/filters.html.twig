@@ -1,0 +1,30 @@
+
+{% block form_row %}
+    <div class="{{ container_class|default }}">
+        <div class="form-group">
+            {{ form_label(form, null, {'label_attr':{'class': 'col-sm-4 control-label' }}) }}
+            <div class="col-sm-8">
+                {{ form_widget(form) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{%- block form_rows -%}
+    {% for child in form %}
+        {{- form_row(child, {container_class: container_class|default}) -}}
+    {% endfor %}
+{%- endblock form_rows -%}
+
+{% block date_widget -%}
+    {% if widget == 'single_text' %}
+        {% set type = 'text' %}
+
+        {% set date_format = datepicker_format ?: 'yyyy-mm-dd' %}
+
+        {% if label != 'label.birthday' %}
+            {% set attr = attr|merge({'data-provide': 'datepicker', 'data-date-format': date_format|lower}) -%}
+        {%endif%}
+
+    {% endif %}
+{%- endblock date_widget %}

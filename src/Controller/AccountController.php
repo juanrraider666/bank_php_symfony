@@ -18,6 +18,14 @@ class AccountController extends BaseController
 {
 
     /**
+     * @Route("/index", name="index_account")
+     */
+    public function index()
+    {
+        return $this->render('account/index.html.twig');
+    }
+
+    /**
      * @Route("/my-accounts", name="my_accounts")
      */
     public function myAccounts(Request $request)
@@ -39,11 +47,23 @@ class AccountController extends BaseController
     }
 
     /**
-     * @Route("/index", name="index_account")
+     * @Route("/third-accounts", name="third_accounts")
      */
-    public function index()
+    public function thirdAccounts(Request $request)
     {
-        return $this->render('account/index.html.twig');
+        $user = $this->getUser();
+
+        $accountsActives = $this->getDoctrine()->getManager()->getRepository(Account::class)->getActivesUserQb($user)
+            ->getQuery()
+            ->getResult();
+
+        $pagination = $this->getPaginator()->paginate($accountsActives,
+            $request->query->getInt('page', 1));
+
+        return $this->render('account/third_accounts.html.twig',[
+            'pagination' => $pagination
+        ]);
     }
+
 
 }

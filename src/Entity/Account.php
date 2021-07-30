@@ -51,7 +51,7 @@ class Account
 
     /**
      * @var integer
-     * @ORM\Column(name="amount", type="decimal", precision=7, scale=2)
+     * @ORM\Column(name="amount", type="float", precision=7, scale=2)
      */
     private $amount;
 

@@ -28,7 +28,7 @@ class Transaction
     private $amount;
 
     /**
-     * @ORM\ManyToOne(targetEntity=CustomerPurchase::class, inversedBy="transactions")
+     * @ORM\ManyToOne(targetEntity=CustomerPurchase::class, inversedBy="transactions", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $purchase;
@@ -44,6 +44,19 @@ class Transaction
      * @ORM\JoinColumn(nullable=false)
      */
     private $TransactionType;
+
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="control_number", type="string", length=250)
+     */
+    private $controlNumber;
+
+    public function __construct()
+    {
+
+    }
 
     public function getId(): ?int
     {
@@ -108,5 +121,41 @@ class Transaction
         $this->TransactionType = $TransactionType;
 
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getControlNumber(): string
+    {
+        return $this->controlNumber;
+    }
+
+    /**
+     * @param string $controlNumber
+     */
+    public function setControlNumber(string $controlNumber): void
+    {
+        $this->controlNumber = $controlNumber;
+    }
+
+    public function generateControlNumber(Customer $customer)
+    {
+        $today = new \DateTime('today');
+
+        $prefix = 'BNKOCAL';
+        if ($prefix) {
+            $elements[] = $prefix;
+        }
+
+        if ($customer->getAccount()) {
+            $elements[] = $customer->getAccount()->getName();
+        }
+
+        $elements[] = $this->id;
+        $elements[] = $today->format('dmy');
+        $elements[] = $this->amount;
+
+        return join('-', $elements);
     }
 }

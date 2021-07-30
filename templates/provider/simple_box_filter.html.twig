@@ -1,0 +1,37 @@
+{% set search_id = search_id|default('now'|date('u')) %}
+{% set search_name = search_name|default('search') %}
+{% set search_value = search_value|default(app.request.query.get(search_name, null, true)) %}
+{% from 'provider/buttons.html.twig' import search, clear_filters %}
+<div class="panel panel-filter panel-{{ type|default('default') }}" {% if id is defined %}id="{{ id }}"{% endif %}>
+    {% block form_start_content %}
+    <form method="get" novalidate="novalidate" class="form-horizontal">
+        {% endblock %}
+        <div class="panel-body">
+            <div class="row">
+                {% block filter_content %}
+                    <div class="col-xs-12 col-sm-2 col-md-1 m_xs_b12 text-center m_xs_b12 text-center">
+                        {% block filter_search_label %}
+                            <label class="control-label" for="{{ search_id }}">{{ 'Buscar'|trans }}</label>
+                        {% endblock %}
+                    </div>
+                    <div class="col-xs-12 col-sm-5 col-md-7 m_xs_b12">
+                        {% block filter_search_fields %}
+                            <input id="search-filter-{{ search_id }}" type="search" class="form-control"
+                                   name="{{- search_name -}}" placeholder="{{ placeholder|default }}"
+                                   value="{%- block search_input_value -%}{{- search_value -}}{%- endblock -%}"/>
+                        {% endblock %}
+                    </div>
+                    <div class="col-xs-12 col-sm-5 col-md-4">
+                        {% block filter_buttons %}
+                            <div class="visible-xs" style="margin-top: 10px"></div>
+                            {{ search(null, {'class':'btn-blue'}) }}
+                            {{ clear_filters(clear_path|default(path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params'))), null, {'class':'btn-blue pull-right m_l10'}) }}
+                        {% endblock %}
+                    </div>
+                {% endblock %}
+            </div>
+        </div>
+        {% block form_end_content %}
+    </form>
+    {% endblock %}
+</div>

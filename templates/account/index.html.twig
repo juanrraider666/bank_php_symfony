@@ -2,25 +2,41 @@
 
 {% block title %}Transfer Accounts!{% endblock %}
 
+{% block stylesheets %}
+{{ parent() }}
+{% endblock %}
 {% block body %}
 <div class="example-wrapper">
-    <ul class="cards">
-        <li>
-            <a href="" class="card">
-                <img src="https://i.imgur.com/oYiTqum.jpg" class="card__image" alt="" />
-                <div class="card__overlay">
-                    <div class="card__header">
-                        <svg class="card__arc" xmlns="http://www.w3.org/2000/svg"><path /></svg>
-                        <img class="card__thumb" src="https://i.imgur.com/7D7I6dI.png" alt="" />
-                        <div class="card__header-text">
-                            <h3 class="card__title"><a href="{{ path('my_accounts') }}">Cuentas Propias</a></h3>
-                            <span class="card__status">1 hour ago</span>
-                        </div>
-                    </div>
-                    <p class="card__description">Lorem ipsum dolor sit amet consectetur adipisicing elit. Asperiores, blanditiis?</p>
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,300,400,600,700,900" rel="stylesheet">
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card card-1">
+                    <a class="text-dark" href="{{ path('my_accounts') }}" style="text-decoration: none;">
+                    <h3>Cuentas Propias</h3>
+                    <p>A curated set of   ES5/ES6/TypeScript wrappers for plugins to easily add any native functionality to your Ionic apps.</p>
+                    </a>
                 </div>
-            </a>
-        </li>
-    </ul>
+            </div>
+            <div class="col-md-4">
+                <div class="card card-2">
+                    <a class="text-dark" href="{{ path('third_accounts') }}" style="text-decoration: none;">
+                        <h3>Cuentas de terceros</h3>
+                        <p>A curated set of   ES5/ES6/TypeScript wrappers for plugins to easily add any native functionality to your Ionic apps.</p>
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card card-3">
+                    <a class="text-dark" href="{{ path('my_transfers') }}" style="text-decoration: none;">
+                        <h3>Transacciones</h3>
+                        <p>Learn how to easily customize and modify your app’s design to fit your
+                            brand across all mobile platform styles.</p>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock %}
