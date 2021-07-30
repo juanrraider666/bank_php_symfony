@@ -44,7 +44,6 @@ class TransferController extends BaseController
         }
 
         return $this->render('transfer/transfer_action.html.twig', [
-            'controller_name' => 'TransferController',
             'accountTransferFrom' => $account,
             'form' => $form->createView()
         ]);
