@@ -1,19 +1,73 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
     <head>
         <meta charset="UTF-8">
         <title>{% block title %}Welcome!{% endblock %}</title>
         {# Run `composer require symfony/webpack-encore-bundle`
            and uncomment the following Encore helpers to start using Symfony UX #}
         {% block stylesheets %}
-            {#{{ encore_entry_link_tags('app') }}#}
+            {{ encore_entry_link_tags('app') }}
         {% endblock %}
 
-        {% block javascripts %}
-            {#{{ encore_entry_script_tags('app') }}#}
-        {% endblock %}
     </head>
     <body>
+     <nav class="navbar navbar-expand navbar-dark bg-dark ">
+        <a class="navbar-brand" href="{{ path('home') }}">
+{#            <img src="{{ asset('build/images/bigfoot.png') }}" width="25" height="30" class="d-inline-block align-top" alt="sasquatch">#}
+            Bank PHP
+        </a>
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="{{ path('home') }}">Inicio</a>
+            </li>
+            <li class="nav-item mr-2">
+                <a class="nav-link" href="{{ path('app_about') }}">Nosotros</a>
+            </li>
+
+            {% if is_granted('ROLE_USER') %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('transfer') }}">Transacciones</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('app_about') }}">Estado de cuenta</a>
+                </li>
+
+                <li class="nav-item">
+{#                    <a class="btn btn-outline-secondary nav-link" href="{{ path('app_logout') }}"><i class="fas fa-sign-out-alt"></i> Log Out</a>#}
+                    <form
+                            action="{{ path('app_logout') }}"
+                            {{ stimulus_controller('submit-confirm', {
+                                title: 'Estas seguro que deseas cerrar sesion?',
+                                icon: 'warning',
+                                confirmButtonText: 'Confirmar',
+                                submitAsync: true,
+                                reload: true,
+                            }) }}
+                            method="POST"
+                            data-action="submit-confirm#onSubmit"
+                    >
+                        <button
+                                class="btn btn-primary btn-sm"
+                        >Log Out</button>
+
+                    </form>
+                </li>
+            {% else %}
+                <li class="nav-item">
+                    <a class="btn btn-outline-info my-2 my-sm-0 nav-link" href="{{ path('app_login') }}">Log In</a>
+                </li>
+                <li class="nav-item ml-1">
+                    {#                    <a class="btn btn-outline-info my-2 my-sm-0 nav-link" href="{{ path('signup') }}">Sign up</a>#}
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
         {% block body %}{% endblock %}
+
+         {% block javascripts %}
+             {{ encore_entry_script_tags('app') }}
+         {% endblock %}
+
     </body>
 </html>
