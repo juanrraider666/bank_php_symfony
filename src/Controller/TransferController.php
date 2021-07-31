@@ -21,7 +21,7 @@ use Symfony\Component\Validator\Constraint;
 class TransferController extends BaseController
 {
     /**
-     * @Route("/transfer/asyn/{account}", name="transfer")
+     * @Route("/transfer/async/{account}", name="transfer")
      */
     public function index(Request $request, TransferHelper $helper, Account $account): Response
     {

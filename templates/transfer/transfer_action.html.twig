@@ -1,12 +1,18 @@
 {% extends 'base.html.twig' %}
 
+{% block stylesheets %}
+     {{ parent() }}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.9.0/mdb.min.css"
+          integrity="sha512-MAFufI57w9mLGud8BKZDbAT57+wu4QWMJJ9Bj5UXFaW99rswsKCvXKRxWlHwdo0yT1Of6TvvWfMqE16ktRcxfA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+{% endblock %}
+
 {% block body %}
     <div class="container">
         <!-- Steps form -->
         <div class="card">
             <div class="card-body mb-4">
 
-                <h2 class="text-center font-weight-bold pt-4 pb-5"><strong>Steps form example</strong></h2>
+                <h2 class="text-center font-weight-bold pt-4 pb-5"><strong>Transferencias</strong></h2>
 
                 <p>
                     <strong>Se esta haciendo una transaccion desde la cuenta
@@ -16,27 +22,27 @@
 
                 <hr class="mt-5">
 
-                <p>Built with <a target="_blank" href="https://mdbootstrap.com/docs/standard/">Proceso de transacción para mis cuentas habiles</a> - free and powerful Bootstrap UI KIT</p>
+                <p>Proceso <a target="_blank" href="#">de transacción para mis cuentas habiles</a> - PHP BANK </p>
 
 {#                <a class="btn btn-primary me-2" href="https://mdbootstrap.com/docs/standard/getting-started/installation/" target="_blank" role="button">Download MDB UI KIT <i class="fas fa-download"></i></a>#}
 {#                <a class="btn btn-danger me-2" target="_blank" href="https://mdbootstrap.com/docs/standard/" role="button">Learn more</a>#}
 {#                <a class="btn btn-success me-2" target="_blank" href="https://mdbootstrap.com/docs/standard/getting-started/" role="button">Tutorials</a>#}
-                <a class="btn btn-dark me-2" target="_blank" href="https://github.com/mdbootstrap/mdb-ui-kit" role="button">Vovler a cuentas <i class="fab fa-github ms-2"></i></a>
+                <a class="btn btn-dark me-2" target="_blank" href="https://github.com/mdbootstrap/mdb-ui-kit" role="button">Volver a cuentas <i class="fab fa-github ms-2"></i></a>
 
                 <hr class="mb-5"/>
                 <!-- Stepper -->
                 <div class="steps-form">
                     <div class="steps-row setup-panel">
                         <div class="steps-step">
-                            <a href="#step-9" type="button" class="btn btn-indigo btn-circle">1</a>
+                            <a href="#step-9" type="button" class="btn btn-info btn-circle">1</a>
                             <p>Seleccion tipo de transacción</p>
                         </div>
                         <div class="steps-step">
-                            <a href="#step-10" type="button" class="btn btn-default btn-circle" disabled="disabled">2</a>
+                            <a href="#step-10" type="button" class="btn btn-primary btn-circle" disabled="disabled">2</a>
                             <p>Seleccion cuenta destino y monto</p>
                         </div>
                         <div class="steps-step">
-                            <a href="#step-11" type="button" class="btn btn-default btn-circle" disabled="disabled">3</a>
+                            <a href="#step-11" type="button" class="btn btn-success btn-circle" disabled="disabled">3</a>
                             <p>Confirmar transacción</p>
                         </div>
                     </div>
@@ -62,14 +68,14 @@
 {#                                <label for="yourAddress" data-error="wrong" data-success="right">Address</label>#}
 {#                                <textarea id="yourAddress" type="text" required="required" rows="2" class="md-textarea validate form-control"></textarea>#}
 {#                            </div>#}
-                            <button class="btn btn-indigo btn-rounded nextBtn float-right" type="button">Continuar</button>
+                            <button class="btn btn-info btn-rounded nextBtn float-right" type="button">Continuar</button>
                         </div>
                     </div>
 
                     <!-- Second Step -->
                     <div class="row setup-content" id="step-10">
                         <div class="col-md-12">
-                            <h3 class="font-weight-bold pl-0 my-4"><strong>Step 2</strong></h3>
+                            <h3 class="font-weight-bold pl-0 my-4"><strong>Seleccion cuenta destino y monto</strong></h3>
                                  {% set va = form.children['destinationAccount'].vars['choices'] is empty %}
                                 <div class="form-group md-form {{ va ? 'd-none' : '' }}">
                                     {{ form_row(form.destinationAccount) }}
@@ -81,13 +87,13 @@
                                     {#                                <label for="companyAddress" data-error="wrong" data-success="right">Company Address</label>#}
                                     {#                                <input id="companyAddress" type="text" required="required" class="form-control validate">#}
                                 </div>
-                                <button class="btn btn-indigo btn-rounded prevBtn float-left {{ va ? 'd-none' : '' }}" type="button">Volver</button>
-                                <button class="btn btn-indigo btn-rounded nextBtn float-right {{ va ? 'd-none' : '' }}" type="button">Continuar</button>
+                                <button class="btn btn-info btn-rounded prevBtn float-left {{ va ? 'd-none' : '' }}" type="button">Volver</button>
+                                <button class="btn btn-info btn-rounded nextBtn float-right {{ va ? 'd-none' : '' }}" type="button">Continuar</button>
 
                                 <div class="form-group md-form mt-3 {{ va ? '' : 'd-none' }}">
                                     <h1>Opps! No tienes mas cuentas para transferir y no es posible hacer transacciones entre las misma cuenta</h1>
                                 </div>
-                             <button class="btn btn-indigo btn-rounded prevBtn float-left {{ va ? '' : 'd-none' }} " type="button">Volver</button>
+                             <button class="btn btn-info btn-rounded prevBtn float-left {{ va ? '' : 'd-none' }} " type="button">Volver</button>
 
 
                         </div>
@@ -97,7 +103,7 @@
                     <div class="row setup-content" id="step-11">
                         <div class="col-md-12">
                             <h3 class="font-weight-bold pl-0 my-4"><strong>Confirmar transacción.</strong></h3>
-                            <button class="btn btn-indigo btn-rounded prevBtn float-left"  type="button">Volver</button>
+                            <button class="btn btn-info btn-rounded prevBtn float-left"  type="button">Volver</button>
                             <button class="btn btn-default btn-rounded float-right" type="submit">Confirmar</button>
                         </div>
                     </div>
