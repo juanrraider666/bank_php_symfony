@@ -33,7 +33,16 @@
                     <td>{{ item.active ? 'Activa' : 'Inactiva' }}</td>
                     <td>
                         {% if item.active == 1 %}
+                            {% set last_transaction = item.transactions|last %}
                             <span class="glyphicon glyphicon-ok" aria-hidden="true">
+
+<div
+        class="container-fluid mt-4"
+    {{ stimulus_controller('reload-content', {
+        url: path('transfer_success_xmlhttp')
+    }) }}
+    data-action="modal-form:success->reload-content#refreshContent"
+>
                                        <div {{ stimulus_controller('modal-form', {
                                             formUrl: path('transfer_third', {accountTo: item.id, account: account.id})
                                         }) }}
@@ -48,6 +57,7 @@
                                             modalTitle: 'Nueva transferencia',
                                         }) }}
                                        </div>
+</div>
                             </span>
                         {% elseif item.active == 3%}
                             <span class="glyphicon glyphicon-transfer" aria-hidden="true"></span>

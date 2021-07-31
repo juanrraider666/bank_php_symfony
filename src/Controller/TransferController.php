@@ -150,4 +150,13 @@ class TransferController extends BaseController
         return $this->render('transfer/confirmation.html.twig', ['controlNumber' => $transaction->getControlNumber()]);
     }
 
+
+    /**
+     * @Route("/transfer/successFully", name="transfer_success_xmlhttp")
+     */
+    public function confirmTransactionXmlHttp()
+    {
+        $transaction = $this->getEntityManager()->getRepository(Transaction::class)->lastTransactionUser($this->getUser());
+        return $this->render('transfer/confirmation.html.twig', ['controlNumber' => $transaction->getControlNumber()]);
+    }
 }

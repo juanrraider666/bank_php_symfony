@@ -30,23 +30,21 @@ class TransferHelper
        $originAccount = $transaction->getOriginAccount();
 
        $tr = new Transaction();
+
+       $destinationAccount->setAmount($destinationAccount->getAmount() + $amount);
        $tr->setAccount($destinationAccount);
        $tr->setTransactionType($transaction->getTransactionType());
        $tr->setAmount($amount);
        $tr->setControlNumber($tr->generateControlNumber($destinationAccount->getCustomer()->last()));
 
-       $purchase = CustomerPurchase::purchase($originAccount->getCustomer()->last(), 1);
-
        $amountAccount = $originAccount->getAmount() - $amount;
-       $originAccount->setAmount($amountAccount);
-
-       $destinationAccount->setAmount($destinationAccount->getAmount() + $amount);
+        $originAccount->setAmount($amountAccount);
+       $purchase = CustomerPurchase::purchase($originAccount->getCustomer()->last(), 1);
 
        $tr->setPurchase($purchase);
 
        $this->entityManager->persist($tr);
        $this->entityManager->flush();
-
        return $tr;
    }
 

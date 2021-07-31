@@ -36,6 +36,20 @@ class TransactionRepository extends ServiceEntityRepository
     }
     */
 
+    public function lastTransactionUser($user)
+    {
+        return $this->createQueryBuilder('t')
+            ->join('t.purchase', 'purchase')
+            ->join('purchase.customer','customer')
+            ->join('customer.user','user')
+            ->andWhere('user.id = :user')
+            ->setParameter('user', $user)
+            ->orderBy('t.id', 'DESC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
+
+    }
 
     public function allTransferUser($user, $filters = [])
     {
